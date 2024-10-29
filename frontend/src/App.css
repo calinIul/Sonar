@@ -1,0 +1,142 @@
+/* General App Layout */
+.app-container {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+
+/* Now Playing at the Top */
+.now-playing-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 99%;
+  height: 75px;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+
+.now-playing-top button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+
+
+.side-menu {
+  width: 300px;
+  background-color: #f5f5f5;
+  border-right: 1px solid #345db4;
+  padding: 20px;
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  position: fixed;
+  top: 100px;
+  bottom: 0;
+}
+
+
+
+.genre-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.genre-item {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: hsl(0, 0%, 100%);
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.genre-item:hover {
+  background-color: #345db4;
+}
+
+.genre-item.active {
+  background-color: #345db4;
+}
+
+.main-content {
+  padding: 20px;
+  margin-top: 80px; /* Add margin to prevent overlap with the Now Playing section */
+  margin-left: 350px; /* Space for the genre side menu */
+  right: 400px;
+}
+
+.search-bar {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  flex-grow: 1;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-bar button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.stations-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.stations-list li {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  display: flex;
+  max-width: 1200px;
+  min-width: 900px;
+  justify-content: space-between;
+}
+
+.recently-played {
+  width: 250px;
+  background-color: #f5f5f5;
+  border-left: 1px solid #ccc;
+  padding: 20px;
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  position: fixed;
+  top: 75px;
+  right: 0;
+  bottom: 0;
+}
+
+
+.recently-played ul {
+  list-style: none;
+  padding: 0;
+}
+
+.recently-played li {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
