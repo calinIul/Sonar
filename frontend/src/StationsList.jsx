@@ -1,11 +1,11 @@
 // StationsList.jsx
 import React from 'react';
 
-const StationsList = ({ stations, playStream }) => {
+const StationsList = ({ stations, playStream, selectedGenre }) => {
 
   if (stations.length == 0) {
     return <div className='main-content'>
-    <h2>Stations</h2>
+    <h2>Stations </h2>
     <p>{"No stations found."}</p>
     </div>
   }

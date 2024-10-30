@@ -9,7 +9,7 @@ import ErrorBoundary from './ErrorBoundary';
 
 const App = () => {
   const [genres, setGenres] = useState([]);
-  const [stations, setStations] = useState(null);
+  const [stations, setStations] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [currentStationName, setCurrentStationName] = useState(null);
   const [audio, setAudio] = useState(null);
@@ -24,16 +24,16 @@ const App = () => {
       .catch((err) => console.error('Error fetching genres:', err));
   }, []);
 
-  const fetchStations = async (searchTerm) => {
-    try {
-      const response = await fetch(`/api/radios/${searchTerm}`);
-      const data = await response.json();
-      setStations(data);
-    } catch (error) {
-      console.error("Error fetching stations:", error);
-      setStations([]);
-    }
+  const fetchStations = (searchTerm) => {
+    fetch(`/api/radios/${searchTerm}`)
+      .then((res) => res.json())
+      .then((data) => setStations(data || []))
+      .catch((err) => {
+        console.error('Error fetching stations:', err);
+        setStations([]);
+      });
   };
+  
 
   const playStream = (station) => {
     if (audio) {
@@ -104,11 +104,11 @@ const App = () => {
         handleSearchSubmit={handleSearchSubmit}
       />
       <ErrorBoundary>
-      {stations !== null && <StationsList
+      <StationsList
         stations={stations}
-        selectedGenre={selectedGenre}
+        selectedGenre={selectedGenre || ''}
         playStream={playStream}
-      />}
+      />
       </ErrorBoundary>
       <RecentlyPlayed recentlyPlayed={recentlyPlayed} playStream={playStream} />
     </div>
