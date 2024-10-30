@@ -1,11 +1,11 @@
+// App.js
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import GenreMenu from './GenreMenu';
 import NowPlaying from './NowPlaying';
 import StationsList from './StationsList';
 import RecentlyPlayed from './RecentlyPlayed';
-import ErrorBoundary from './ErrorBoundary';
-
+import RadioContext from './RadioContext';
 
 const App = () => {
   const [genres, setGenres] = useState([]);
@@ -16,6 +16,7 @@ const App = () => {
   const [volume, setVolume] = useState(0.5);
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch('/api/genres')
@@ -24,26 +25,27 @@ const App = () => {
       .catch((err) => console.error('Error fetching genres:', err));
   }, []);
 
-  const fetchStations = (searchTerm) => {
-    fetch(`/api/radios/${searchTerm}`)
-      .then((res) => res.json())
-      .then((data) => setStations(data || []))
-      .catch((err) => {
-        console.error('Error fetching stations:', err);
-        setStations([]);
-      });
+  const fetchStations = async (term) => {
+    setLoading(true);
+    setStations([]);
+    try {
+      const res = await fetch(`/api/radios/${term}`);
+      const data = await res.json();
+      setStations(data || []);
+    } catch (err) {
+      console.error('Error fetching stations:', err);
+      setStations([]);
+    } finally {
+      setLoading(false);
+    }
   };
-  
 
   const playStream = (station) => {
-    if (audio) {
-      audio.pause();
-    }
+    if (audio) audio.pause();
 
     const newAudio = new Audio(station.url);
     newAudio.volume = volume;
     newAudio.play();
-
     newAudio.addEventListener('ended', () => setAudio(null));
 
     setAudio(newAudio);
@@ -68,50 +70,42 @@ const App = () => {
   const handleVolumeChange = (event) => {
     const newVolume = event.target.value;
     setVolume(newVolume);
-    if (audio) {
-      audio.volume = newVolume;
-    }
+    if (audio) audio.volume = newVolume;
   };
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     if (searchTerm.trim() === '') return;
-  
+    setSelectedGenre(searchTerm);  // Sets the key based on search term
     fetchStations(searchTerm);
-    setSelectedGenre(searchTerm);
   };
-  
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
   return (
-    <div className="app-container">
-      <NowPlaying
-        currentStationName={currentStationName}
-        stopStream={stopStream}
-        volume={volume}
-        handleVolumeChange={handleVolumeChange}
-      />
-      <GenreMenu
-        genres={genres}
-        selectedGenre={selectedGenre}
-        searchTerm={searchTerm}
-        setSelectedGenre={setSelectedGenre}
-        fetchStations={fetchStations}
-        handleSearchChange={handleSearchChange}
-        handleSearchSubmit={handleSearchSubmit}
-      />
-      <ErrorBoundary>
-      <StationsList
-        stations={stations}
-        selectedGenre={selectedGenre || ''}
-        playStream={playStream}
-      />
-      </ErrorBoundary>
-      <RecentlyPlayed recentlyPlayed={recentlyPlayed} playStream={playStream} />
-    </div>
+    <RadioContext.Provider value={{ stations, selectedGenre, playStream }}>
+      <div className="app-container">
+        <NowPlaying
+          currentStationName={currentStationName}
+          stopStream={stopStream}
+          volume={volume}
+          handleVolumeChange={handleVolumeChange}
+        />
+        <GenreMenu
+          genres={genres}
+          selectedGenre={selectedGenre}
+          searchTerm={searchTerm}
+          setSelectedGenre={setSelectedGenre}
+          fetchStations={fetchStations}
+          handleSearchChange={handleSearchChange}
+          handleSearchSubmit={handleSearchSubmit}
+        />
+        <StationsList key={selectedGenre || searchTerm} loading={loading} />
+        <RecentlyPlayed recentlyPlayed={recentlyPlayed} playStream={playStream} />
+      </div>
+    </RadioContext.Provider>
   );
 };
 
