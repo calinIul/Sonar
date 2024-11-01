@@ -4,6 +4,7 @@ const axios = require('axios');
 
 const app = express();
 app.use(cors()); // Enable CORS for the frontend
+app.use(express.json());
 
 const BASE_API_URL = 'https://de1.api.radio-browser.info/json'; // Radio Browser API base URL
 
@@ -66,6 +67,21 @@ app.get('/api/radios/:term', async (req, res) => {
   }
 });
 
+app.post('/api/identify-song', async (req, res) => {
+  console.log(req.body);
+  const { streamUrl } = req.body;
+
+  try {
+      // Forward the stream URL to the audio-recognition service
+      const response = await axios.post('http://localhost:5001/identify', { streamUrl });
+
+      // Send back the response from the audio-recognition service
+      res.json(response.data);
+  } catch (error) {
+      console.error("Error in identify-song route:", error);
+      res.status(500).json({ error: "Failed to identify song" });
+  }
+});
 
 
 

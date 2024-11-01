@@ -11,7 +11,7 @@ const App = () => {
   const [genres, setGenres] = useState([]);
   const [stations, setStations] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(null);
-  const [currentStationName, setCurrentStationName] = useState(null);
+  const [currentStation, setCurrentStation] = useState(null);
   const [audio, setAudio] = useState(null);
   const [volume, setVolume] = useState(0.5);
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
@@ -49,7 +49,7 @@ const App = () => {
     newAudio.addEventListener('ended', () => setAudio(null));
 
     setAudio(newAudio);
-    setCurrentStationName(station.name);
+    setCurrentStation(station);
 
     setRecentlyPlayed((prev) => {
       if (!prev.find((item) => item.name === station.name)) {
@@ -63,7 +63,7 @@ const App = () => {
     if (audio) {
       audio.pause();
       setAudio(null);
-      setCurrentStationName(null);
+      setCurrentStation(null);
     }
   };
 
@@ -84,14 +84,31 @@ const App = () => {
     setSearchTerm(event.target.value);
   };
 
+  const identifySong = async (station) => {
+    try {
+      const response = await fetch('/api/identify-song', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ streamUrl: station.url }) // Ensure body is a stringified JSON
+      });
+      const data = await response.json();
+      console.log("Song identification result: ", data);
+      return data; // Returning data to use in NowPlaying
+    } catch (error) {
+      console.log("Error identifying song: ", error);
+      return null;
+    }
+  };
+
   return (
     <RadioContext.Provider value={{ stations, selectedGenre, playStream }}>
       <div className="app-container">
         <NowPlaying
-          currentStationName={currentStationName}
+          currentStation={currentStation}
           stopStream={stopStream}
           volume={volume}
           handleVolumeChange={handleVolumeChange}
+          identifySong={identifySong}
         />
         <GenreMenu
           genres={genres}

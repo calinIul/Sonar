@@ -1,6 +1,4 @@
-librosa
-torch
-numpy
-scipy
-soundfile
-matplotlib
+flask
+requests
+subprocess
+acoustid
