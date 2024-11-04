@@ -1,6 +1,7 @@
 // NowPlaying.jsx
 
 import React, { useState } from 'react';
+import no_stations from './assets/images/no_stations.png'
 
 const NowPlaying = ({ currentStation, stopStream, volume, handleVolumeChange, identifySong }) => {
   const [songData, setSongData] = useState(null);
@@ -14,13 +15,23 @@ const NowPlaying = ({ currentStation, stopStream, volume, handleVolumeChange, id
 
   return (
     <div className="now-playing-top">
-      <h2>Now Playing: {currentStation ? currentStation.name : "Nothing playing"}</h2>
-      <button onClick={stopStream}>Stop</button>
-      {currentStation && (
-        <button onClick={handleIdentifySong}>Find song</button>
-      )}
-      <div>
-        <label>Volume: </label>
+      <img src={no_stations}></img>
+      <div className="now-playing-sr">
+      <h3>Now Playing: </h3>
+      <p>{currentStation ? currentStation.name : ""}</p>
+      <p>
+        {currentStation && (
+          <button onClick={stopStream}>Stop</button> )}
+        {currentStation && (
+        <button onClick={handleIdentifySong}>Find song</button>)}
+      </p>
+      
+      
+      
+      </div>
+      
+      <div className='now-playing-sr'>
+        <label><h3>Volume: </h3></label>
         <input
           type="range"
           min="0"
@@ -31,8 +42,8 @@ const NowPlaying = ({ currentStation, stopStream, volume, handleVolumeChange, id
         />
       </div>
       {songData && (
-        <div>
-          <h3>Song Identification Result:</h3>
+        <div className="now-playing-sr">
+          <h3>Last search result:</h3>
           {(songData.metadata && (
             <div>
           <p>Title: {songData.metadata.music[0].title}</p>

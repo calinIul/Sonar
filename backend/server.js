@@ -3,10 +3,10 @@ const cors = require('cors');
 const axios = require('axios');
 
 const app = express();
-app.use(cors()); // Enable CORS for the frontend
+app.use(cors());
 app.use(express.json());
 
-const BASE_API_URL = 'https://de1.api.radio-browser.info/json'; // Radio Browser API base URL
+const BASE_API_URL = 'https://de1.api.radio-browser.info/json'; 
 
 // Get all genres
 app.get('/api/genres', async (req, res) => {
@@ -20,21 +20,21 @@ app.get('/api/genres', async (req, res) => {
   }
 });
 
-// Get radio stations by search term
+// Get radio stations
 app.get('/api/radios/:term', async (req, res) => {
   const term = req.params.term || '';
   try {
-    // If term is empty, fetch genres
+    
     if (term === '') {
       console.log("Term is empty - from server")
       const response = await axios.get(`${BASE_API_URL}/tags`);
       const genres = response.data
         .map(tag => tag.name)
         .filter(tag => /^(?=.*[A-Za-z])[A-Za-z ]{4,}$/.test(tag));
-      return res.json(genres);  // Return after sending the response
+      return res.json(genres);  
     }
 
-    // If term matches a country format, fetch stations by country
+    // fetch by country
     else if (/^[A-Z][a-z]*$/.test(term)) {
       const response = await axios.get(`${BASE_API_URL}/stations/bycountry/${term}`);
       const httpsStations = response.data.filter(station => 
@@ -44,11 +44,11 @@ app.get('/api/radios/:term', async (req, res) => {
       if (httpsStations.length === 0) {
         return res.json([]);
       } else {
-        return res.json(httpsStations);  // Return here with stations if available
+        return res.json(httpsStations); 
       }
     }
 
-    // If term does not match country format, treat it as a tag and fetch by tag
+    // fetch by tag
     else {
       const response = await axios.get(`${BASE_API_URL}/stations/bytag/${term}`);
       const httpsStations = response.data.filter(station => 
@@ -56,26 +56,28 @@ app.get('/api/radios/:term', async (req, res) => {
       );
 
       if (httpsStations.length === 0) {
-        return res.json([]);  // Return here
+        return res.json([]);  
       } else {
-        return res.json(httpsStations);  // Return here with stations if available
+        return res.json(httpsStations); 
       }
     }
   } catch (error) {
-    // If an error occurs, send a 500 response
+    
     res.status(500).json({ error: `Error fetching radios for: ${term}` });
   }
 });
 
+
+// audio-recognition request
 app.post('/api/identify-song', async (req, res) => {
   console.log(req.body);
   const { streamUrl } = req.body;
 
   try {
-      // Forward the stream URL to the audio-recognition service
+      
       const response = await axios.post('http://localhost:5001/identify', { streamUrl });
 
-      // Send back the response from the audio-recognition service
+      
       res.json(response.data);
   } catch (error) {
       console.error("Error in identify-song route:", error);
@@ -85,7 +87,6 @@ app.post('/api/identify-song', async (req, res) => {
 
 
 
-// Server listening on port 5000
 app.listen(5000, () => {
   console.log('Backend server is running on port 5000');
 });

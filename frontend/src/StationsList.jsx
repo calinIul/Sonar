@@ -1,6 +1,7 @@
-// StationsList.jsx
+// StationsList.jsx ------------ atm black metal on load error
 import React, { useContext } from 'react';
 import RadioContext from './RadioContext';
+import no_stations from './assets/images/no_stations.png'
 
 const StationsList = ({ loading }) => {
   const { stations, playStream, selectedGenre } = useContext(RadioContext);
@@ -14,6 +15,7 @@ const StationsList = ({ loading }) => {
       <div className="main-content">
         <h2>Stations for {selectedGenre}</h2>
         <p>No stations found.</p>
+        <p><img src={no_stations}></img></p>
       </div>
     );
   }
