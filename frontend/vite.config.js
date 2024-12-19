@@ -6,7 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:5000', // Proxy API requests to backend
+      '/user': 'https://f78a52bftrial-dev-backend-cds-srv.cfapps.us10-001.hana.ondemand.com/odata/v4',
+      '/stations' : 'https://f78a52bftrial-dev-backend-cds-srv.cfapps.us10-001.hana.ondemand.com/odata/v4'
     }
   },
 })
