@@ -1,4 +1,4 @@
-import StationsController from "./stations-service.controller";
+import StationsController from "./controller/stations-service.controller";
 
 module.exports = async function StationsService() {
   const db = await cds.connect.to("db");

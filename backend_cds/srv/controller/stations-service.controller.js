@@ -1,5 +1,5 @@
-import constants from "./utils/constants";
-import StationsRepository from "./repository/stations-repository";
+import constants from "../utils/constants";
+import StationsRepository from "../repository/stations-repository";
 
 const axios = require("axios");
 const BASE_API_URL = "https://de1.api.radio-browser.info/json";
@@ -13,24 +13,34 @@ export default class StationsController {
   }
   async onGetGenres(offset, limit) {
     const Genres = this.cdsEntities[CDS_ENTITIES.Genres];
-    const existingGenres = this.stationsRepository.getGenres(Genres, [
+    const existingGenres = await this.stationsRepository.getGenres(Genres, [
       "NAME",
       "MODIFIEDAT",
     ]);
-    if (!existingGenres.length) {
+
+    const staleGenres = existingGenres.filter(
+      (genre) =>
+        Date.now() - new Date(genre.modifiedAt).getTime() > CACHE_DURATION
+    );
+
+    let paginatedGenres;
+
+    if (existingGenres.length && !staleGenres.length) {
+      paginatedGenres = existingGenres
+        .slice(offset, offset + limit)
+        .map((genre) => genre.name);
+    } else {
+      const response = await axios.get(`${BASE_API_URL}/tags`);
+      const genres = response.data
+        .map((tag) => tag.name)
+        .filter((tag) => /^(?=.*[A-Za-z])[A-Za-z ]{4,}$/.test(tag));
+
       await this.stationsRepository.insertGenres(Genres, genres);
+
+      paginatedGenres = genres.slice(offset, offset + limit);
     }
-    for (let genre of existingGenres) {
-      {
-        const response = await axios.get(`${BASE_API_URL}/tags`);
-        const genres = response.data
-          .map((tag) => tag.name)
-          .filter((tag) => /^(?=.*[A-Za-z])[A-Za-z ]{4,}$/.test(tag));
-        await this.stationsRepository.insertGenres(Genres, genres);
-      }
-      const paginatedGenres = cachedGenres.slice(offset, offset + limit);
-      return paginatedGenres;
-    }
+
+    return paginatedGenres;
   }
 
   async onGetStations(term) {
