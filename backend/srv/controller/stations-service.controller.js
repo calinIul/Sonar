@@ -2,8 +2,7 @@ import constants from "../utils/constants";
 import StationsRepository from "../repository/stations-repository";
 
 const axios = require("axios");
-const BASE_API_URL = "https://de1.api.radio-browser.info/json";
-const { CDS_ENTITIES, CACHE_DURATION } = constants;
+const { CDS_ENTITIES, CACHE_DURATION, BASE_API_URL } = constants;
 
 export default class StationsController {
   constructor(db, cdsEntities) {

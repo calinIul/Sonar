@@ -1,0 +1,8 @@
+node_modules
+audio-recognition/venv
+frontend/vite.config.js.*
+frontend/README.md
+audio-recognition/__pycache__
+audio-recognition/sample.wav
+frontend/src/assets/images/panda_black.jpeg
+frontend/src/assets/images/no_stations.png

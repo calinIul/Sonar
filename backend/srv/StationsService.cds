@@ -1,8 +1,8 @@
-using com.sap.radio as db from '../db/data-models';
+using stream.station as ss from '../db';
 
 service StationsService {
-    entity Stations as projection on db.Stations;
-    entity SavedStations as projection on db.SavedStations;
+    entity Stations as projection on ss.Stations;
+    entity SavedStations as projection on ss.SavedStations;
 
     function getGenres() returns array of String;
     function getStations(genre: String) returns array of Station;
