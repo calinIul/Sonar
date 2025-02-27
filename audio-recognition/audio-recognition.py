@@ -9,7 +9,7 @@ app = Quart(__name__)
 def main():
     return jsonify({"error": "Nothing to see here"}), 404
 
-@app.route('/fingerprint', methods=['POST', 'GET'])
+@app.route('/fingerprint', methods=['GET'])
 def _get_fingerprint():
     
     data = request.json
@@ -22,7 +22,7 @@ def _get_fingerprint():
     
     return jsonify(result)
 
-@app.route('/sample', methods=['POST'])
+@app.route('/sample', methods=['GET'])
 async def _capture_sample():
     """
     API endpoint to capture a sample from a stream and return metadata.
@@ -42,20 +42,17 @@ async def _capture_sample():
         return jsonify({"message": "No metadata found from ffmpeg"}), 200
 
 
-@app.route('/identify', methods=['POST', 'GET'])
-def identify_song():
+@app.route('/identify', methods=['GET'])
+async def identify_song():
     print("Endpoint hit")
-    data = request.json
+    data = await request.json
     stream_url = data.get('streamUrl')
     
     if not stream_url:
         return jsonify({"error": "No stream URL provided"}), 400
     
     
-    result = id_song(stream_url)
-    
-    
-    
+    result = await id_song(stream_url)
     return jsonify(result)
 
 if __name__ == '__main__':

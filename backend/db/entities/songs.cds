@@ -5,24 +5,23 @@ using {stream.station.Users} from './users';
 using {stream.station.SongGenres} from './genres';
 
 entity Songs : cuid {
-    title    : String;
-    artist   : String;
-    album    : String;
-    genres   : Composition of many SongGenres
-                   on genres.song.ID = ID;
-    metadata : Association to one SongMetadata;
-    user     : Composition of many UserSongs
-                   on user.song.ID = ID;
+    @assert.notNull title  : String;
+    @assert.notNull artist : String;
+    metadata               : Association to one SongsMetadata;
+    user                   : Composition of many UserSongs
+                                 on user.song.ID = ID;
 
 }
 
-entity SongMetadata : cuid {
+entity SongsMetadata : cuid {
     @assert.notNull song : Association to one Songs
                                on song.metadata = $self;
-    system               : String;
-    duration             : Integer;
+    album                : String;
+    genres               : Composition of many SongGenres
+                               on genres.song.ID = ID;
     url                  : String;
-    image_url            : String;
+    duration             : Integer;
+    cover                : String;
     fingerprint          : String;
     embedding            : Vector(1536);
 

@@ -91,9 +91,9 @@ async def capture_sample_from_stream(stream_url, duration_sec, output_file=sampl
 
     return metadata
 
-def id_song(stream_url=None):
+async def id_song(stream_url=None):
     #Capture a sample from the stream
-    capture_sample_from_stream(stream_url, duration_sec=10, output_file=sample_file)
+    await capture_sample_from_stream(stream_url, duration_sec=10, output_file=sample_file)
 
     timestamp = time.time()
 
@@ -115,8 +115,8 @@ def id_song(stream_url=None):
     # Specify the path to your audio file here
     file_path = sample_file 
 
-    # Open the WAV file and prepare the request
-    with open(file_path, "rb") as f:
+    f = open(file_path, "rb")
+    try:
         sample_bytes = os.path.getsize(file_path)
         files = {'sample': f} 
 
@@ -128,7 +128,10 @@ def id_song(stream_url=None):
             'data_type': data_type,
             "signature_version": signature_version
         }
-    #Send the request
-    response = requests.post(requrl, files=files, data=data)
+
+        response = requests.post(requrl, files=files, data=data)
+    finally:
+        f.close()  
+
     return response.json()
 
