@@ -3,17 +3,11 @@ using sonar as db from '../db';
 service StationsService {
     entity Stations as projection on db.Stations;
     entity SavedStations as projection on db.SavedStations;
+    entity Genres as projection on db.Genres;
 
-    function getGenres() returns array of String;
-    function getStations(genre: String) returns array of Station;
+    function getGenres() returns array of Genres;
+    function getStations(genre: String) returns array of Stations;
     
-
-    type Station {
-        stationuuid: UUID;
-        name: String;
-        url_resolved: String;
-        country: String;
-    }
 
 
 };

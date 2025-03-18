@@ -2,6 +2,7 @@ import constants from '../utils/constants';
 import UserRepository from '../repository/users-repository';
 import StationsRepository from '../repository/stations-repository';
 import SongsRepository from '../repository/songs-repository';
+import AIClient from '../helper/ai-core.helper';
 const { uuid } = cds.utils;
 
 const { CDS_ENTITIES, AUDIO_URL, METADATA_TOKEN } = constants;
@@ -12,6 +13,7 @@ export default class AudioController {
     this.cdsEntities = cdsEntities;
     this.stationRepository = new StationsRepository(db);
     this.songsRepository = new SongsRepository(db);
+    this.AIClient = new AIClient();
   }
 
   async onFindSong(streamUrl, user_ID) {
@@ -33,10 +35,17 @@ export default class AudioController {
       song.id = song_id;
       song.genres = song_metadata.genres.map((genre) => genre.name);
       song_metadata.fingerprint = fingerprint;
-      //5. Process the song
+      
+      //5. Generate && process embeddings
+      try {
+        const embedding = await this.AIClient.getEmbeddings(fingerprint);
+        song_metadata.embedding = embedding;
+      }
+      catch (error) {
+        console.log('Error fetching embeddings:', error);
+      }
+      //6. Process the song
       await this._processSong(Songs, song, song_metadata, user_ID);
-      //6. Todo - Generate embeddnings
-
       //7. End process
       return null;
     }
@@ -48,7 +57,8 @@ export default class AudioController {
     //3.b
     if (body) {
       song =
-      { ID: song_id,
+      { 
+        ID: song_id,
         title: body.title,
         artist: body.artists[0].name,
       }
@@ -63,7 +73,16 @@ export default class AudioController {
       }
       song_metadata.fingerprint = fingerprint;
 
-      //5. b Process the song
+      //5.b Generate && process embeddings
+      try {
+        const embedding = await this.AIClient.getEmbeddings(fingerprint);
+        song_metadata.embedding = embedding;
+      }
+      catch (error) {
+        console.log('Error fetching embeddings:', error);
+      }
+
+      //6. b Process the song
       await this._processSong(Songs, song, song_metadata, user_ID);
     }
 
