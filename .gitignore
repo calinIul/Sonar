@@ -2,8 +2,51 @@ node_modules
 audio-recognition/venv
 frontend/vite.config.js.*
 frontend/README.md
+frontend/node_modules
+frontend/eslint.config.js
 audio-recognition/__pycache__
 audio-recognition/sample.wav
 frontend/src/assets/images/panda_black.jpeg
 frontend/src/assets/images/no_stations.png
 audio-recognition/constants.py
+backend/node_modules
+audio-recognition/venv
+# CAP backend_cds
+backend/_out
+backend/*.db
+backend/*.sqlite
+backend/connection.properties
+backend/default-*.json
+backend/.cdsrc-private.json
+backend/gen/
+backend/node_modules/
+backend/target/
+backend/db/data/
+
+
+# Web IDE, App Studio
+backend/.che/
+backend/.gen/
+
+# MTA
+backend/*_mta_build_tmp
+backend/*.mtar
+backend/mta_archives/
+
+# Other
+backend/.DS_Store
+backend/*.orig
+backend/*.log
+
+backend/*.iml
+backend/*.flattened-pom.xml
+
+# IDEs
+backend/.vscode
+# backend/.idea
+
+# @cap-js/cds-typer
+backend/@cds-models
+backend/.env
+backend/README.md
+backend/db.*
