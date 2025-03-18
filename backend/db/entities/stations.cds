@@ -1,8 +1,8 @@
-namespace stream.station;
+namespace sonar;
 
 using {cuid} from '@sap/cds/common';
-using {stream.station.StationGenres} from './genres';
-using {stream.station.Users} from './users';
+using {sonar.StationGenres} from './genres';
+using {sonar.Users} from './users';
 
 entity Stations : cuid {
 

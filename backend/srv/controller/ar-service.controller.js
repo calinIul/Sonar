@@ -18,7 +18,7 @@ export default class AudioController {
     const Songs = this.cdsEntities[CDS_ENTITIES.Songs];
     const SongsMetadata = this.cdsEntities[CDS_ENTITIES.SongsMetadata];
     const UserSongs = this.cdsEntities[CDS_ENTITIES.UserSongs];
-    //const song_id = uuid();
+    const song_id = uuid();
 
     //1. Generate fingerprint and get song data
     const fingerprint = await this._generateFingerprint(streamUrl);
@@ -30,29 +30,41 @@ export default class AudioController {
     if (song.artist && song.title) {
       //4. Get metadata for the song
       const song_metadata = await this._getSongMetadata(song);
+      song.id = song_id;
+      song.genres = song_metadata.genres.map((genre) => genre.name);
       song_metadata.fingerprint = fingerprint;
       //5. Process the song
       await this._processSong(Songs, song, song_metadata, user_ID);
-      //6. Exit
+      //6. Todo - Generate embeddnings
+
+      //7. End process
       return null;
     }
 
     //2.b Fallback - Call the audio recognition service, get the song data
-    result = await this._callAudioRecAPI(streamUrl);
-    // song = result?.status?.msg === "Success" ?
-    //   {
-    //     result.metadata.music.
-    //   }
+    const result = await this._callAudioRecAPI(streamUrl);
+    const body = result?.status?.msg === "Success" ? result.metadata.music[0] : false;
     
     //3.b
-    if (song) {
-      //4.b Get metadata for the song
-      const song_metadata = await this._getSongMetadata(song);
-      const song = {
-        title: data.music[0].title,
-        artist: data.music[0].artists[0].name,
-      };
-      //5. b
+    if (body) {
+      song =
+      { ID: song_id,
+        title: body.title,
+        artist: body.artists[0].name,
+      }
+      //4.b Get metadata from the result object
+      const song_metadata = {
+        song_ID: song_id,
+        duration: body.duration_ms,
+        album: body.album.name,
+        cover: body.external_metadata?.spotify ? body.external_metadata.spotify[0].album.cover : null,
+        genres: body.genres.map((genre) => genre.name),
+        url: body.external_metadata?.spotify ? body.external_metadata.spotify[0].link : null,
+      }
+      song_metadata.fingerprint = fingerprint;
+
+      //5. b Process the song
+      await this._processSong(Songs, song, song_metadata, user_ID);
     }
 
     return null;
@@ -65,9 +77,15 @@ export default class AudioController {
       entity,
       song.title
     );
-    //3. Sync UserSongs
-    await this.songsRepository.syncUserSongs(entity, user_ID, song_ID);
-    //4. Add song metadata
+    //3. Add genres
+    await this.songsRepository.addGenres(entity, song_ID, song.genres);
+    //4. Sync UserSongs
+    const userSong = {
+      user_ID: user_ID,
+      song_ID: song_ID,
+    }
+    await this.songsRepository.syncUserSongs(entity, userSong);
+    //5. Add song metadata
     await this.songsRepository.addSongMetadata(
       SongsMetadata,
       song_ID,

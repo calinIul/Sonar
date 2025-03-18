@@ -1,8 +1,8 @@
-namespace stream.station;
+namespace sonar;
 
 using {cuid} from '@sap/cds/common';
-using {stream.station.Users} from './users';
-using {stream.station.SongGenres} from './genres';
+using {sonar.Users} from './users';
+using {sonar.SongGenres} from './genres';
 
 entity Songs : cuid {
     @assert.notNull title  : String;
@@ -10,6 +10,8 @@ entity Songs : cuid {
     metadata               : Association to one SongsMetadata;
     user                   : Composition of many UserSongs
                                  on user.song.ID = ID;
+    genres               : Composition of many SongGenres
+                               on genres.song.ID = ID;
 
 }
 
@@ -17,8 +19,6 @@ entity SongsMetadata : cuid {
     @assert.notNull song : Association to one Songs
                                on song.metadata = $self;
     album                : String;
-    genres               : Composition of many SongGenres
-                               on genres.song.ID = ID;
     url                  : String;
     duration             : Integer;
     cover                : String;

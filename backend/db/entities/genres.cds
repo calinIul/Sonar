@@ -1,8 +1,8 @@
-namespace stream.station;
+namespace sonar;
 
 using {cuid} from '@sap/cds/common';
-using {stream.station.Stations} from './stations';
-using {stream.station.Songs} from './songs';
+using {sonar.Stations} from './stations';
+using {sonar.Songs} from './songs';
 
 entity Genres: cuid {
     @assert.notNull name           : String;

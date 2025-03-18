@@ -1,17 +1,17 @@
-using stream.station as ss from '../db';
+using sonar as db from '../db';
 
 service UserService {
     entity Users          as
-        select from ss.Users {
+        select from db.Users {
             ID,
             email,
             stations,
             songs
         };
 
-    entity SavedStations as projection on ss.SavedStations;
-    entity Songs         as projection on ss.Songs;
-    entity Stations      as projection on ss.Stations;
+    entity SavedStations as projection on db.SavedStations;
+    entity Songs         as projection on db.Songs;
+    entity Stations      as projection on db.Stations;
     action   getSong(streamUrl : String, user_ID : UUID)                                                             returns Songs;
     function getUserStations(user_ID : UUID)                                                                         returns array of Stations;
     action   saveStation(user_ID : UUID, stationuuid : UUID, name : String, url_resolved : String, country : String) returns array of SavedStations;
