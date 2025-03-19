@@ -46,6 +46,7 @@ backend/.vscode
 # backend/.idea
 
 # @cap-js/cds-typer
+backend/srv/utils/constants.js
 backend/@cds-models
 backend/.env
 backend/README.md
