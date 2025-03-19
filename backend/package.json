@@ -5,8 +5,10 @@
   "repository": "https://github.com/calinIul/Sonar",
   "license": "UNLICENSED",
   "private": true,
+  "type" :"module",
   "dependencies": {
     "@cap-js/hana": "^1",
+    "@sap-ai-sdk/foundation-models": "^1.9.0",
     "@sap/cds": "^8",
     "@sap/xsenv": "^5.4.0",
     "@sap/xssec": "^4",
@@ -30,7 +32,9 @@
     "requires": {
       "db": {
         "kind": "sqlite",
-        "credentials": { "url": "db.sqlite" }
+        "credentials": {
+          "url": "db.sqlite"
+        }
       },
       "[production]": {
         "db": {

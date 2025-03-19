@@ -1,9 +1,10 @@
-import constants from "../utils/constants";
-import UserRepository from "../repository/users-repository";
-import StationsRepository from "../repository/stations-repository";
-const bcrypt = require("bcryptjs");
-const { uuid } = cds.utils;
-const xsenv = require("@sap/xsenv");
+import constants from "../utils/constants.js";
+import UserRepository from "../repository/users-repository.js";
+import StationsRepository from "../repository/stations-repository.js";
+import bcrypt from 'bcryptjs';
+import pkg from '@sap/cds/lib/utils/cds-utils.js';
+import xsenv from '@sap/xsenv';
+const { uuid } = pkg;
 const services = xsenv.getServices({
   uaa: { tag: "xsuaa" },
 });

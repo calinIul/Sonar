@@ -10,8 +10,8 @@ entity Songs : cuid {
     metadata               : Association to one SongsMetadata;
     user                   : Composition of many UserSongs
                                  on user.song.ID = ID;
-    genres               : Composition of many SongGenres
-                               on genres.song.ID = ID;
+    genres                 : Composition of many SongGenres
+                                 on genres.song.ID = ID;
 
 }
 

@@ -1,6 +1,5 @@
-import UserController from "./controller/user-service.controller";
+import UserController from "../srv/controller/user-service.controller.js";
 
-const cds = require("@sap/cds");
 
 module.exports = async function UsersService() {
   const db = await cds.connect.to("db");

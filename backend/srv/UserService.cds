@@ -12,6 +12,7 @@ service UserService {
     entity SavedStations as projection on db.SavedStations;
     entity Songs         as projection on db.Songs;
     entity Stations      as projection on db.Stations;
+    entity Genres       as projection on db.Genres;
 
     function getUserStations(user_ID : UUID)                                                                         returns array of Stations;
     action   saveStation(user_ID : UUID, stationuuid : UUID, name : String, url_resolved : String, country : String) ;

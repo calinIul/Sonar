@@ -1,6 +1,5 @@
-import { AudioController } from "../controller/ar-service.controller";
-
-const cds = require("@sap/cds");
+import AudioController from "../srv/controller/ar-service.controller.js";
+import cds from '@sap/cds'
 
 module.exports = async function UsersService() {
   const db = await cds.connect.to("db");

@@ -1,7 +1,7 @@
-import constants from "../utils/constants";
-import StationsRepository from "../repository/stations-repository";
+import constants from "../utils/constants.js";
+import StationsRepository from "../repository/stations-repository.js";
+import axios from "axios";
 
-const axios = require("axios");
 const { CDS_ENTITIES, CACHE_DURATION, BASE_API_URL } = constants;
 
 export default class StationsController {
