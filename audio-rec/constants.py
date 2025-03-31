@@ -1,8 +1,0 @@
-access_key = "c568b346935f40a56f9cc11717f5d93b"
-access_secret = "L0sSLPRC5u3ehPuPcH7Z5cujdJXW9UzdLyZN2Al3"
-requrl = "https://identify-eu-west-1.acrcloud.com/v1/identify"
-http_method = "POST"
-http_uri = "/v1/identify"
-data_type = "audio"
-signature_version = "1"
-sample_file = "sample.wav"

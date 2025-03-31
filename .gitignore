@@ -11,6 +11,7 @@ frontend/src/assets/images/no_stations.png
 audio-recognition/constants.py
 backend/node_modules
 audio-recognition/venv
+audio-rec/*
 # CAP backend_cds
 backend/_out
 backend/*.db
