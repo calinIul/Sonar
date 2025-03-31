@@ -5,13 +5,13 @@ import bcrypt from 'bcryptjs';
 import pkg from '@sap/cds/lib/utils/cds-utils.js';
 import xsenv from '@sap/xsenv';
 const { uuid } = pkg;
-const services = xsenv.getServices({
-  uaa: { tag: "xsuaa" },
-});
+// const services = xsenv.getServices({
+//   uaa: { tag: "xsuaa" },
+// // });
 
-const CLIENT_ID = services.uaa.clientid;
-const CLIENT_SECRET = services.uaa.clientsecret;
-const { CDS_ENTITIES, AUDIO_URL } = constants;
+// const CLIENT_ID = services.uaa.clientid;
+// const CLIENT_SECRET = services.uaa.clientsecret;
+// const { CDS_ENTITIES, AUDIO_URL } = constants;
 
 export default class UserController {
   constructor(db, cdsEntities) {

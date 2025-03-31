@@ -1,11 +1,11 @@
 {
-  "name": "sonar-backend",
+  "name": "sonar",
   "version": "1.0.0",
-  "description": "Sonar backend",
+  "description": "Sonar",
   "repository": "https://github.com/calinIul/Sonar",
   "license": "UNLICENSED",
   "private": true,
-  "type" :"module",
+  "type": "module",
   "dependencies": {
     "@cap-js/hana": "^1",
     "@sap-ai-sdk/foundation-models": "^1.9.0",
@@ -26,6 +26,8 @@
   },
   "scripts": {
     "build:mta": "mbt build -t gen --mtar mta.tar",
+    "mta:deploy": "cf deploy gen/mta.tar",
+    "build": "cds build --production",
     "start": "cds-serve"
   },
   "cds": {
@@ -44,10 +46,10 @@
           "kind": "xsuaa",
           "restrict_all_services": false
         }
-      },
-      "sql": {
-        "native_hana_associations": false
       }
+    },
+    "sql": {
+      "native_hana_associations": false
     }
   }
 }

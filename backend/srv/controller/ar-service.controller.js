@@ -14,6 +14,7 @@ export default class AudioController {
   }
 
   async onFindSong(streamUrl, user_ID) {
+    if (!streamUrl || !user_ID) return;
     const Songs = this.cdsEntities[CDS_ENTITIES.Songs];
     // const SongsMetadata = this.cdsEntities[CDS_ENTITIES.SongsMetadata];
     // const UserSongs = this.cdsEntities[CDS_ENTITIES.UserSongs];
@@ -181,6 +182,7 @@ export default class AudioController {
         body: JSON.stringify({ streamUrl: streamUrl }),
       });
       const response = await res.json();
+      console.log(response);
       return response?.fingerprint || null;
     } catch (error) {
       return null;

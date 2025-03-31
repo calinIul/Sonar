@@ -1,5 +1,47 @@
 {
-  "scopes": [],
-  "attributes": [],
-  "role-templates": []
+  "xsappname": "Sonar",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.User",
+      "description": "User Actions"
+    },
+    {
+      "name": "$XSAPPNAME.Administrator",
+      "description": "Administrator Actions"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "SonarUser",
+      "description": "Sonar Basic User",
+      "scope-references": [
+        "$XSAPPNAME.User"
+      ]
+    },
+    {
+      "name": "SonarAdministrator",
+      "description": "Sonar Administrator",
+      "scope-references": [
+        "$XSAPPNAME.Administrator"
+      ]
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "SonarUser",
+      "description": "Sonar Basic User",
+      "role-template-references": [
+        "$XSAPPNAME.SonarUser"
+      ]
+    },
+    {
+      "name": "SonarAdministrator",
+      "description": "Sonar Administrator",
+      "role-template-references": [
+        "$XSAPPNAME.SonarAdministrator"
+      ]
+    }
+  ],
+  "authorities": [],
+  "attributes": []
 }

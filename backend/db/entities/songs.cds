@@ -23,9 +23,7 @@ entity SongsMetadata : cuid {
     duration             : Integer;
     cover                : String;
     fingerprint          : String;
-    embedding            : Vector(1536);
-
-
+    embedding            : Vector(1536) default null;
 }
 
 entity UserSongs {

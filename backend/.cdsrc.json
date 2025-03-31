@@ -1,0 +1,11 @@
+{
+  "[production]": {
+    "build": {
+      "target": "gen",
+      "tasks": [
+        { "for": "nodejs", "src": "srv", "dest": "srv", "options": { "model": ["db", "srv"] } },
+        { "for": "hana", "src": "db", "dest": "db", "options": { "model": ["db", "srv"] } }
+      ]
+    }
+  }
+}

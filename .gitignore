@@ -22,12 +22,11 @@ backend/gen/
 backend/node_modules/
 backend/target/
 backend/db/data/
-
+backend/srv/utils/*
 
 # Web IDE, App Studio
 backend/.che/
 backend/.gen/
-
 # MTA
 backend/*_mta_build_tmp
 backend/*.mtar
@@ -46,7 +45,6 @@ backend/.vscode
 # backend/.idea
 
 # @cap-js/cds-typer
-backend/srv/utils/constants.js
 backend/@cds-models
 backend/.env
 backend/README.md

@@ -22,8 +22,8 @@ entity Stations : cuid {
 }
 
 entity SavedStations : cuid {
-
         user    : Association to Users;
         station : Association to Stations;
+        saved   : Boolean;
 
 }
