@@ -6,18 +6,17 @@ using {sonar.Users} from './users';
 
 entity Stations : cuid {
 
-        @assert.notNull name : String;
-        @assert.notNull url  : String;
-        url_resolved         : String;
-        image_url            : String;
-        country              : String;
-        lastchangetime       : DateTime;
-        clickcount           : Integer;
-        clicktrend           : Integer;
-        saved_stations       : Composition of many SavedStations
-                                       on saved_stations.station.ID = ID;
-        genres               : Composition of many StationGenres
-                                       on genres.station.ID = ID;
+        @mandatory name : String;
+        @mandatory url  : String;
+        url_resolved    : String;
+        image_url       : String;
+        country         : String;
+        clickcount      : Integer;
+        clicktrend      : Integer;
+        saved_stations  : Composition of many SavedStations
+                                  on saved_stations.station.ID = ID;
+        genres          : Composition of many StationGenres
+                                  on genres.station.ID = ID;
 
 }
 

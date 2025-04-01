@@ -2,16 +2,15 @@ export default class StationsRepository {
   constructor(db) {
     this.db = db;
   }
-  async insertGenres(entity, genres) {
-    await this.db.run(INSERT.into(entity).entries(genres));
-  }
-  async getGenres(entity, columns) {
-    return this.db.run(SELECT.from(entity).columns(columns).orderBy("NAME"));
-  }
 
-  async getStation(entity, stationuuid) {
+  async getStationById(entity, stationuuid) {
     return this.db.run(
       await SELECT.one.from(entity).where({ ID: stationuuid })
+    );
+  }
+  async getStationsByGenre(entity, composition, genre) {
+    return this.db.run(
+      await SELECT.from(entity).where({ ID: {in : SELECT.from(composition).columns('station').where({genre: genre})}})
     );
   }
   async addStation(entity, stationuuid, name, url_resolved, country) {
@@ -20,6 +19,10 @@ export default class StationsRepository {
         .columns("ID", "name", "url_resolved", "country")
         .values(stationuuid, name, url_resolved, country)
     );
+  }
+
+  async addStations(entity, stations) {
+    await this.db.run(INSERT.into(entity).entries(stations))
   }
 
   async getSavedStation(entity, user_ID, stationuuid) {
