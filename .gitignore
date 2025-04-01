@@ -5,8 +5,13 @@ audio-recognition/__pycache__
 audio-recognition/.venv
 audio-recognition/manifest.yml
 audio-recognition/constants.py
-audio-recognition/Procfile
 audio-recognition/sample.wav
+audio-recognition/runtime.txt
+audio-recognition/Procfile
+audio-recognition/DockerFile
+audio-recognition/.dockerignore
+audio-recognition/start
+
 
 # backend
 backend/.vscode

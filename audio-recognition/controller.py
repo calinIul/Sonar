@@ -1,4 +1,5 @@
 import requests
+import json
 import base64
 import hashlib
 import hmac
@@ -11,7 +12,7 @@ import re
 from constants import requrl, access_key, access_secret, http_method, http_uri, data_type, signature_version, sample_file
 
 
-def get_fingerprint(file_path=sample_file):
+def get_fingerprint(file_path):
     """
     Uses `fpcalc` to generate the audio fingerprint for a given file.
     
@@ -30,7 +31,7 @@ def get_fingerprint(file_path=sample_file):
 
     try:
         # Run `fpcalc` command
-        result = subprocess.run(["fpcalc", "-json", file_path], capture_output=True, text=True)
+        result = subprocess.run(["fpcalc", "-json", "-ignore-errors", file_path], capture_output=True, text=True)
 
         # Check if the command executed successfully
         if result.returncode != 0:
@@ -39,7 +40,6 @@ def get_fingerprint(file_path=sample_file):
             return None, None
 
         # Extract JSON output
-        import json
         output = json.loads(result.stdout)
         duration = output.get("duration")
         fingerprint = output.get("fingerprint")
@@ -56,44 +56,49 @@ def get_fingerprint(file_path=sample_file):
 
 
 
-async def capture_sample_from_stream(stream_url, duration_sec, output_file=sample_file):
+async def capture_sample_from_stream(stream_url, duration_sec):
     """
     Runs FFmpeg in a background thread to capture the sample and extract metadata.
     
     Returns:
         dict: Metadata from the stream.
     """
-    loop = asyncio.get_running_loop()
-    command = [
-        "ffmpeg", "-y", "-i", stream_url, "-t", str(duration_sec),
-        "-acodec", "pcm_s16le", "-ar", "44100", "-ac", "2", output_file
-    ]
+    try:
+        loop = asyncio.get_running_loop()
+        command = [
+            "ffmpeg", "-y", "-i", stream_url, "-t", str(duration_sec),
+            "-acodec", "pcm_s16le", "-ar", "44100", "-ac", "2", "sample.wav"
+        ]
+        
+        # Run FFmpeg asynchronously and capture both stdout and stderr
+        process = await asyncio.create_subprocess_exec(
+            *command,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+
+        stdout, stderr = await process.communicate()
+
+        # Convert output to text
+        stderr_text = stderr.decode()
+
+        # Extract metadata using regex
+        metadata = {}
+        for line in stderr_text.split("\n"):
+            match = re.match(r"^\s*(\S+)\s*:\s*(.*)$", line)
+            if match:
+                key, value = match.groups()
+                metadata[key] = value.strip()
+        
+        return metadata
+        
+    except:
+        return None
     
-    # Run FFmpeg asynchronously and capture both stdout and stderr
-    process = await asyncio.create_subprocess_exec(
-        *command,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE
-    )
-
-    stdout, stderr = await process.communicate()
-
-    # Convert output to text
-    stderr_text = stderr.decode()
-
-    # Extract metadata using regex
-    metadata = {}
-    for line in stderr_text.split("\n"):
-        match = re.match(r"^\s*(\S+)\s*:\s*(.*)$", line)
-        if match:
-            key, value = match.groups()
-            metadata[key] = value.strip()
-
-    return metadata
 
 async def id_song(stream_url=None):
     #Capture a sample from the stream
-    await capture_sample_from_stream(stream_url, duration_sec=10, output_file=sample_file)
+    await capture_sample_from_stream(stream_url, output_file=sample_file)
 
     timestamp = time.time()
 
