@@ -1,16 +1,13 @@
 using sonar as db from '../db';
 
 service StationsService {
-    entity Stations as projection on db.Stations;
+    entity Stations      as projection on db.Stations;
     entity SavedStations as projection on db.SavedStations;
-    entity Users as projection on db.Users;
-    entity UserSongs as projection on db.UserSongs;
-    entity Genres as projection on db.Genres;
-    entity Songs as projection on db.Songs;
-
-    function getGenres() returns array of Genres;
-    function getStations(genre: String) returns array of Stations;
-    
-
+    entity Users         as projection on db.Users;
+    entity UserSongs     as projection on db.UserSongs;
+    entity Genres        as projection on db.Genres;
+    entity Songs         as projection on db.Songs;
+    function getGenres()                 returns array of Genres;
+    function getStations(genre : String) returns array of Stations;
 
 };

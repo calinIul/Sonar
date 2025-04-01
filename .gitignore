@@ -18,7 +18,6 @@ backend/.vscode
 backend/db/data
 backend/gen
 backend/node_modules
-backend/srv/utils/constants.js
 bakcend/mta.yaml
 
 # frontend
