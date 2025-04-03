@@ -1,7 +1,7 @@
-import AudioController from "../srv/controller/ar-service.controller.js";
+import AudioController from "./controller/ar-service.controller.js";
 import cds from '@sap/cds'
 
-module.exports = async function UsersService() {
+export default async function AudioRecognitionService() {
   const db = await cds.connect.to("db");
   const audioController = new AudioController(db, db.entities);
 

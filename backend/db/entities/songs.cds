@@ -5,28 +5,28 @@ using {sonar.Users} from './users';
 using {sonar.SongGenres} from './genres';
 
 entity Songs : cuid {
-    @assert.notNull title  : String;
-    @assert.notNull artist : String;
-    metadata               : Association to one SongsMetadata;
-    user                   : Composition of many UserSongs
-                                 on user.song.ID = ID;
-    genres                 : Composition of many SongGenres
-                                 on genres.song.ID = ID;
+    @mandatory title : String;
+    artist           : String;
+    metadata         : Composition of one SongsMetadata
+                           on metadata.song = $self;
+    user             : Composition of many UserSongs
+                           on user.song.ID = ID;
+    genres           : Association to many SongGenres
+                           on genres.song = $self;
 
 }
 
-entity SongsMetadata : cuid {
-    @assert.notNull song : Association to one Songs
-                               on song.metadata = $self;
-    album                : String;
-    url                  : String;
-    duration             : Integer;
-    cover                : String;
-    fingerprint          : String;
-    embedding            : Vector(1536) default null;
+entity SongsMetadata {
+    key song        : Association to one Songs;
+        album       : String;
+        url         : String;
+        duration    : Integer;
+        cover       : String;
+        fingerprint : String;
+// embedding            : Vector(1536) default null;
 }
 
 entity UserSongs {
-    key song : Association to one Songs;
-    key user : Association to one Users;
+    key song : Association to Songs;
+    key user : Association to Users;
 }

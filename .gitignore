@@ -19,6 +19,7 @@ backend/db/data
 backend/gen
 backend/node_modules
 bakcend/mta.yaml
+backend/db.sqlite
 
 # frontend
 node_modules

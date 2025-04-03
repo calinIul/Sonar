@@ -1,24 +1,25 @@
 namespace sonar;
 
+using {cuid} from '@sap/cds/common';
 using {sonar.Stations} from './stations';
 using {sonar.Songs} from './songs';
 
-@readonly
+
 entity Genres {
-    key name           : String;
-        station_genres : Composition of many StationGenres
-                             on station_genres.genre.name = name;
-        song_genres    : Composition of many SongGenres
-                             on song_genres.genre.name = name;
+    key name    : String;
+        station : Association to many StationGenres
+                      on station.genre = $self;
+        song    : Association to many SongGenres
+                      on song.genre = $self;
 }
 
 
 entity StationGenres {
-    key station : Association to one Stations;
-    key genre   : Association to one Genres;
+    key station : Association to Stations;
+    key genre   : Association to Genres;
 }
 
 entity SongGenres {
-    key song  : Association to one Songs;
-    key genre : Association to one Genres;
+    key song  : Association to Songs;
+    key genre : Association to Genres;
 }

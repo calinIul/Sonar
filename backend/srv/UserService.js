@@ -1,7 +1,7 @@
-import UserController from "../srv/controller/user-service.controller.js";
+import UserController from "./controller/user-service.controller.js";
 
 
-module.exports = async function UsersService() {
+export default async function UsersService() {
   const db = await cds.connect.to("db");
   const userController = new UserController(db, db.entities);
 

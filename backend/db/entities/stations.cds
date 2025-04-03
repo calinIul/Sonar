@@ -5,7 +5,6 @@ using {sonar.StationGenres} from './genres';
 using {sonar.Users} from './users';
 
 entity Stations : cuid {
-
         @mandatory name : String;
         @mandatory url  : String;
         url_resolved    : String;
@@ -14,15 +13,15 @@ entity Stations : cuid {
         clickcount      : Integer;
         clicktrend      : Integer;
         saved_stations  : Composition of many SavedStations
-                                  on saved_stations.station.ID = ID;
-        genres          : Composition of many StationGenres
-                                  on genres.station.ID = ID;
+                                  on saved_stations.station = $self;
+        genre           : Association to many StationGenres
+                                  on genre.station = $self;
 
 }
 
-entity SavedStations : cuid {
+entity SavedStations: cuid {
         user    : Association to Users;
         station : Association to Stations;
-        saved   : Boolean;
+        saved   : Boolean default false;
 
 }

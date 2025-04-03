@@ -1,8 +1,7 @@
 namespace sonar;
 
-using {cuid, managed} from '@sap/cds/common';
+using {cuid} from '@sap/cds/common';
 using {sonar.SavedStations} from './stations';
-using {sonar.Stations} from './stations';
 using {sonar.UserSongs} from './songs';
 
 
