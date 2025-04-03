@@ -1,6 +1,5 @@
 namespace sonar;
 
-using {cuid} from '@sap/cds/common';
 using {sonar.Stations} from './stations';
 using {sonar.Songs} from './songs';
 

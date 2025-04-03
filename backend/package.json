@@ -46,6 +46,9 @@
         "auth": {
           "kind": "xsuaa",
           "restrict_all_services": false
+        },
+        "server": {
+          "cors": false
         }
       }
     },

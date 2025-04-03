@@ -12,16 +12,14 @@ entity Stations : cuid {
         country         : String;
         clickcount      : Integer;
         clicktrend      : Integer;
-        saved_stations  : Composition of many SavedStations
-                                  on saved_stations.station = $self;
         genre           : Association to many StationGenres
                                   on genre.station = $self;
+        users           : Composition of many UserStations
+                                  on users.station.ID = ID;
 
 }
 
-entity SavedStations: cuid {
-        user    : Association to Users;
-        station : Association to Stations;
-        saved   : Boolean default false;
-
+entity UserStations {
+        key user    : Association to Users;
+        key station : Association to Stations;
 }

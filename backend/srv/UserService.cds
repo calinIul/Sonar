@@ -1,26 +1,44 @@
 using sonar as db from '../db';
 
-service UserService {
-    entity Users         as
-        select from db.Users {
-            ID,
-            email,
-            stations,
-            songs
-        };
+@path: '/my-profile'
+service UserService @(requires: 'Listener') {
+    entity Users        as
+        projection on db.Users
+        excluding {
+            password
+        }
 
-    entity SavedStations as projection on db.SavedStations;
-    entity Songs         as projection on db.Songs;
-    entity Stations      as projection on db.Stations;
-    entity Genres        as projection on db.Genres;
-    function getUserStations(user_ID : UUID)           returns array of Stations;
-    action   saveStation(user_ID : UUID, stationuuid : UUID, name : String, url_resolved : String, country : String);
-    action   removeStation(user_ID : UUID, stationuuid : UUID);
-    action   logIn(email : String, password : String)  returns Users;
-    action   signUp(email : String, password : String) returns Users;
-    annotate UserService.getUserStations with @(requires: 'authenticated-user');
-    annotate UserService.saveStation with @(requires: 'authenticated-user');
-    annotate UserService.removeStation with @(requires: 'authenticated-user');
+    entity UserStations as projection on db.UserStations;
+    entity UserSongs    as projection on db.UserSongs;
+    action logIn(email : String, password : String)  returns Users;
+    action signUp(email : String, password : String) returns Users;
 
+    annotate UserSongs with @(restrict: [
+        {
+            grant: 'READ',
+            to   : 'Listener',
+            where: '$user.listeners = listener'
+        },
+        {
+            grant: 'WRITE',
+            to   : 'Listener',
+            where: '$user.listeners = listener'
+        }
+    ]);
+
+    annotate UserStations with @(restrict: [
+        {
+            grant: 'READ',
+            to   : 'Listener',
+            where: '$user.listeners = listener'
+        },
+        {
+            grant: 'WRITE',
+            to   : 'Listener',
+            where: '$user.listeners = listener'
+        }
+    ]);
+
+    annotate Users with @(requires: ['Admin']);
 
 }
