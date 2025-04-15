@@ -3,7 +3,11 @@ namespace sonar;
 using {sonar.Stations} from './stations';
 using {sonar.Songs} from './songs';
 
-
+@cds.search: {
+    name: true,
+    song.song.title,
+    song.song.artist
+}
 entity Genres {
     key name    : String;
         station : Association to many StationGenres
