@@ -16,7 +16,9 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "express": "^4",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "@cap-js/cds-types": "^0.7.0",
@@ -29,31 +31,5 @@
     "mta:deploy": "cf deploy gen/mta.tar",
     "build": "cds build --production",
     "start": "cds-serve"
-  },
-  "cds": {
-    "requires": {
-      "db": {
-        "kind": "sqlite",
-        "impl": "@cap-js/sqlite",
-        "credentials": {
-          "url": "db.sqlite"
-        }
-      },
-      "[production]": {
-        "db": {
-          "kind": "hana"
-        },
-        "auth": {
-          "kind": "xsuaa",
-          "restrict_all_services": false
-        },
-        "server": {
-          "cors": false
-        }
-      }
-    },
-    "sql": {
-      "native_hana_associations": false
-    }
   }
 }

@@ -10,8 +10,6 @@ service UserService @(requires: 'Listener') {
 
     entity UserStations as projection on db.UserStations;
     entity UserSongs    as projection on db.UserSongs;
-    action logIn(email : String, password : String)  returns Users;
-    action signUp(email : String, password : String) returns Users;
 
     annotate UserSongs with @(restrict: [
         {

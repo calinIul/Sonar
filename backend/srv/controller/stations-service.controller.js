@@ -18,13 +18,11 @@ export default class StationsController {
   async onGetGenres(limit, offset) {
     const Genres = this.cdsEntities[CDS_ENTITIES.Genres];
     let genres = await this.genresRepository.getGenres(Genres, limit, offset);
+    
     if (!genres || genres.length === 0) {
       genres = await this._fetchGenresFromAPI(limit, offset);
     }
-    return {
-      genres,
-      offset: offset + limit,
-    };
+    return genres;
   }
   async _fetchGenresFromAPI(limit, offset) {
     const Genres = this.cdsEntities[CDS_ENTITIES.Genres];
@@ -37,7 +35,7 @@ export default class StationsController {
         .filter((tag) => /^(?=.*[A-Za-z])[A-Za-z ]{4,}$/.test(tag.name));
 
       genres.sort((a, b) => a.name.localeCompare(b.name));
-      await this.genresRepository.insertGenres(Genres, genres);
+      await this.genresRepository.addGenres(Genres, genres);
       genres = genres.slice(offset, offset + limit);
       return genres;
     } catch (error) {

@@ -1,11 +1,41 @@
-{
+{ 
+  "requires": {
+    "db": {
+      "kind": "sqlite",
+      "impl": "@cap-js/sqlite",
+      "credentials": {
+        "url": "db.sqlite"
+      }
+    },
   "[production]": {
+    "db": {
+      "kind": "hana"
+    },
+    "auth": {
+      "kind": "xsuaa",
+      "restrict_all_services": false
+    },
+    "server": {
+      "cors": false
+    },
     "build": {
       "target": "gen",
       "tasks": [
-        { "for": "nodejs", "src": "srv", "dest": "srv", "options": { "model": ["db", "srv"] } },
-        { "for": "hana", "src": "db", "dest": "db", "options": { "model": ["db", "srv"] } }
+        {
+          "for": "nodejs",
+          "src": "srv",
+          "dest": "srv",
+          "options": { "model": ["db", "srv"] }
+        },
+        {
+          "for": "hana",
+          "src": "db",
+          "dest": "db",
+          "options": { "model": ["db", "srv"] }
+        }
       ]
     }
+  }
+  
   }
 }

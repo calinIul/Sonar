@@ -20,9 +20,6 @@ export default class UserController {
     this.userRepository = new UserRepository(db);
     this.stationRepository = new StationsRepository(db);
   }
-  async onGetUserStations(user_ID) {
-    return this.userRepository.getUserStations(user_ID);
-  }
 
   async onSignUp(email, password) {
     const User = this.cdsEntities[CDS_ENTITIES.User];
@@ -81,6 +78,10 @@ export default class UserController {
     } catch (error) {
       req.reject("Error", error);
     }
+  }
+
+  async onGetUserStations(user_ID) {
+    return this.userRepository.getUserStations(user_ID);
   }
 
   async onRemoveStation(user_ID, stationuuid) {

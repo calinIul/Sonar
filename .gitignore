@@ -20,6 +20,7 @@ backend/gen
 backend/node_modules
 bakcend/mta.yaml
 backend/db.sqlite
+backend/package-lock.json
 
 # frontend
 node_modules

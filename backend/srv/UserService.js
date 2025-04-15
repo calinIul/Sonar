@@ -12,18 +12,6 @@ export default async function UsersService() {
     return stations;
   });
 
-  this.on("signUp", async (req) => {
-    const { email, password } = req.data;
-    const user = await userController.onSignUp(email, password);
-    return user;
-  });
-
-  this.on("logIn", async (req) => {
-    const { email, password } = req.data;
-    const user = await userController.onLogIn(email, password);
-    return user;
-  });
-
   this.on("removeStation", async (req) => {
     const { user_ID, stationuuid } = req.data;
     await userController.onRemoveStation(user_ID, stationuuid);
