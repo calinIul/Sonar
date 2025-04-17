@@ -18,7 +18,7 @@ export default class StationsController {
   async onGetGenres(limit, offset) {
     const Genres = this.cdsEntities[CDS_ENTITIES.Genres];
     let genres = await this.genresRepository.getGenres(Genres, limit, offset);
-    
+
     if (!genres || genres.length === 0) {
       genres = await this._fetchGenresFromAPI(limit, offset);
     }
@@ -48,7 +48,21 @@ export default class StationsController {
       let stations = await this.stationsRepository.getStationsByGenre(
         StationGenres,
         searchTerm
-      );
+      ).then();
+      stations = stations.map((entry) => {
+        const station = entry.station || entry;
+      
+        return {
+          ID: station.stationuuid,
+          name: station.name,
+          url: station.url,
+          url_resolved: station.url_resolved,
+          image_url: station.image_url,
+          country: station.country,
+          clickcount: station.clickcount,
+          clicktrend: station.clicktrend,
+        };
+      });
       if (stations && stations.length !== 0) {
         return stations;
       }
@@ -79,17 +93,18 @@ export default class StationsController {
         )
         .map((station) => {
           return {
-            ID: station.stationuuid,
-            name: station.name,
-            url: station.url,
-            url_resolved: station.url_resolved,
-            image_url: station.favicon,
-            country: station.country,
-            clickcount: station.clickcount,
-            clicktrend: station.clicktrend,
+            
+              ID: station.stationuuid,
+              name: this._normalizeStationName(station.name),
+              url: station.url,
+              url_resolved: station.url_resolved,
+              image_url: station.image_url,
+              country: station.country,
+              clickcount: station.clickcount,
+              clicktrend: station.clicktrend,
+            
           };
         });
-      
     }
 
     // fetch by tag
@@ -105,17 +120,18 @@ export default class StationsController {
         )
         .map((station) => {
           return {
-            ID: station.stationuuid,
-            name: station.name,
-            url: station.url,
-            url_resolved: station.url_resolved,
-            image_url: station.favicon,
-            country: station.country,
-            clickcount: station.clickcount,
-            clicktrend: station.clicktrend,
+            
+              ID: station.stationuuid,
+              name: this._normalizeStationName(station.name),
+              url: station.url,
+              url_resolved: station.url_resolved,
+              image_url: station.image_url,
+              country: station.country,
+              clickcount: station.clickcount,
+              clicktrend: station.clicktrend,
+            
           };
         });
-      
     }
     if (stations && stations.length !== 0) {
       const station_ids = stations.map((station) => station.ID);
@@ -129,9 +145,24 @@ export default class StationsController {
     const StationGenres = this.cdsEntities[CDS_ENTITIES.StationGenres];
     const Genres = this.cdsEntities[CDS_ENTITIES.Genres];
     await this.stationsRepository.addStations(Stations, stations);
-    await this.genresRepository.addGenres(Genres, {name: searchTerm});
-    await Promise.all(station_ids.map((id) => {
-      this.genresRepository.addStationGenre(StationGenres, {station_ID: id, genre_name: searchTerm})
-    }));
+    await this.genresRepository.addGenres(Genres, { name: searchTerm });
+    await Promise.all(
+      station_ids.map((id) => {
+        this.genresRepository.addStationGenre(StationGenres, {
+          station_ID: id,
+          genre_name: searchTerm,
+        });
+      })
+    );
+  }
+  _normalizeStationName(rawName) {
+    if (!rawName || typeof rawName !== 'string') {
+      return '';
+    }
+    let name = rawName.split(' - ')[0];
+    name = name.replace(/[^a-zA-Z0-9äöüÄÖÜß\s]/g, '');
+    name = name.replace(/\s+/g, ' ').trim();
+    const words = name.split(' ').slice(0, 7);
+    return words.join(' ');
   }
 }

@@ -19,6 +19,8 @@ backend/db/data
 backend/gen
 backend/node_modules
 bakcend/mta.yaml
+backend/db.sqlite-shm
+backend/db.sqlite-wal
 backend/db.sqlite
 backend/package-lock.json
 
