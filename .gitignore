@@ -1,4 +1,5 @@
 node_modules
+package.json
 
 # ar module
 audio-recognition/__pycache__
