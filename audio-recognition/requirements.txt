@@ -1,4 +1,3 @@
-flask
+quart
 requests
-subprocess
-acoustid
+ffmpeg

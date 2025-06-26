@@ -1,0 +1,427 @@
+/* General App Layout */
+.app-container {
+  display: flex;
+  height: 100vh;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  position: relative;
+}
+
+/* Now Playing at the Top */
+.now-playing-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 75px;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  /* Space between left and right sections */
+  align-items: center;
+  z-index: 1000;
+}
+
+.now-playing-left {
+  display: flex;
+  align-items: center;
+}
+
+.now-playing-right {
+  color: #333;
+  display: flex;
+  align-items: center;
+  /* Stack user info and songs */
+}
+
+/* General styling for items in now-playing-left and now-playing-right */
+.now-playing-sr {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 15px;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  color: #333;
+  background-color: #007bff;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-right: 15px;
+  /* Separate from other elements */
+  position: relative;
+  margin-top: 15px;
+}
+
+.now-playing-sr-row {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 15px;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  color: #333;
+  background-color: #007bff;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-right: 15px;
+  /* Separate from other elements */
+  position: relative;
+  margin-top: 15 px;
+}
+
+.now-playing-sr-row img {
+  border-radius: 15px;
+}
+
+.now-playing-sr h3 {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 2px;
+  position: relative;
+  /* Keep it in place */
+  top: 0;
+  /* Stay at the top of the container */
+  background-color: #007bff;
+  /* Match the parent background */
+  z-index: 10;
+  /* Ensure it remains above other content */
+  padding: 5px 0;
+  /* Add padding for better spacing */
+
+}
+
+.now-playing-sr p {
+  margin: 0;
+  padding: 2px 0;
+}
+
+.now-playing-sr input {
+  accent-color: #333;
+}
+
+.now-playing-top button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.now-playing-top img {
+
+  width: 75px;
+  height: 75px;
+}
+
+.user-info,
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.songs-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.songs-list li {
+  color: #333;
+  font-size: 0.8rem;
+  padding: 2px 0;
+}
+
+
+
+.side-menu {
+  width: 300px;
+  background-color: #f5f5f5;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  padding: 20px;
+  transition: transform 0.3s ease;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: fixed;
+  top: 95px;
+  bottom: 0;
+}
+
+
+
+.genre-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.genre-item {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: hsl(0, 0%, 100%);
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.genre-item:hover {
+  background-color: #333;
+  color: #ddd
+}
+
+.genre-item.active {
+  background-color: #333;
+  color: #ddd
+}
+
+.main-content {
+  padding: 20px;
+  margin-top: 80px;
+  /* Add margin to prevent overlap with the Now Playing section */
+  margin-left: 350px;
+  /* Space for the genre side menu */
+  right: 400px;
+}
+
+.search-bar {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  flex-grow: 1;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-bar button {
+  padding: 8px 12px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.stations-list ul {
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  /* Remove default margin */
+}
+
+.stations-list li {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  /* Center-align content vertically */
+  justify-content: space-between;
+  /* Space out content horizontally */
+  max-width: 1200px;
+  min-width: 900px;
+  height: 100px;
+  /* Fixed height for consistent appearance */
+  box-sizing: border-box;
+  /* Include padding in height calculation */
+}
+
+.stations-list li img {
+  width: 50px;
+  /* Constrain width */
+  height: 50px;
+  /* Constrain height */
+  object-fit: cover;
+  /* Ensure the image doesn't distort */
+  border-radius: 5px;
+  /* Optional: Add rounded corners */
+  margin-right: 15px;
+  /* Add spacing between the image and other elements */
+}
+
+.stations-list li h3 {
+  margin: 0;
+  /* Remove unnecessary margins */
+  font-size: 1rem;
+  /* Adjust font size as needed */
+}
+
+.stations-list button {
+  padding: 8px 12px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.stations-list li button {
+  background-color: #333;
+  color: #ddd;
+  margin-left: 10px;
+  /* Space between buttons */
+}
+
+
+
+.stations-list li>*:not(img) {
+  flex: 1;
+  /* Ensure non-image elements share the remaining space */
+}
+
+.stations-list li h3:last-child {
+  text-align: center;
+  /* Center-align country name */
+}
+
+
+.recently-played {
+
+  width: 250px;
+  background-color: #333;
+  border-left: 1px solid #f5f5f5;
+  padding: 20px;
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  position: fixed;
+  top: 75px;
+  right: 0;
+  bottom: 0;
+}
+
+.recently-played h2 {
+  padding: 10px 15px;
+  border-radius: 12.5px;
+  font-size: 1.1rem;
+  background-color: #007bff;
+  color: #333;
+  border: 1px groove #ddd;
+}
+
+
+.recently-played ul {
+  list-style: none;
+  padding: 0;
+}
+
+.recently-played li {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #ddd;
+  color: #333;
+  border: 1px solid #f9f9f9;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  align-items: stretch;
+  height: 75px;
+
+}
+
+.recently-played li button {
+  background-color: #333;
+  color: #ddd;
+}
+
+.pie-chart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.pie-chart canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+.pie-chart button {
+  padding: 6px 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 10px;
+  font-size: 0.95rem;
+
+}
+
+
+.songs-ul {
+
+  max-height: 80px;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Hidden songs by default */
+
+.hidden-song {
+  display: none;
+  /* Initially hide items beyond the first 3 */
+}
+
+/* On hover: show all songs */
+.songs-list:hover .songs-ul {
+  max-height: 500px;
+  /* Adjust to fit all items */
+  overflow: visible;
+}
+
+/* On hover, reveal hidden songs */
+.songs-list:hover .hidden-song {
+  display: list-item;
+  /* Make hidden items visible */
+}
+
+/* Styling for the songs list */
+.songs-ul li {
+  position: sticky;
+  margin: 5px 0;
+  color: #333;
+  /* Ensure text contrast */
+}
+
+/* Optional: smooth hover effect on list items */
+.songs-ul li:hover {
+  color: #ffcc00;
+  transition: color 0.2s ease-in-out;
+}
+
+.songs-scroll-container {
+  max-height: 100px;
+  /* Adjust to desired height */
+  overflow-y: scroll;
+  /* Enable vertical scrolling */
+  scrollbar-width: none;
+  /* Firefox: hide scrollbar */
+  -ms-overflow-style: none;
+  /* IE: hide scrollbar */
+  position: relative;
+  /* Ensure it stays within bounds */
+}
+
+/* Hide scrollbar for WebKit (Chrome, Edge, Safari) */
+.songs-scroll-container::-webkit-scrollbar {
+  display: none;
+}

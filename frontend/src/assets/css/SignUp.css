@@ -1,0 +1,23 @@
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.signup-container h2 {
+  margin-bottom: 1rem;
+}
+
+.signup-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-container label {
+  margin-bottom: 0.5rem;
+}
+
+.signup-container button {
+  margin-top: 1rem;
+}
