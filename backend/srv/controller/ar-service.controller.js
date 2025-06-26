@@ -16,8 +16,8 @@ export default class AudioController {
   async onFindSong(streamUrl, user_ID) {
     if (!streamUrl || !user_ID) return;
     const Songs = this.cdsEntities[CDS_ENTITIES.Songs];
-    // const SongsMetadata = this.cdsEntities[CDS_ENTITIES.SongsMetadata];
-    // const UserSongs = this.cdsEntities[CDS_ENTITIES.UserSongs];
+    const SongsMetadata = this.cdsEntities[CDS_ENTITIES.SongsMetadata];
+    const UserSongs = this.cdsEntities[CDS_ENTITIES.UserSongs];
     const song_id = uuid();
 
     try {
