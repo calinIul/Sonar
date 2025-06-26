@@ -4,7 +4,6 @@ node_modules
 audio-recognition/__pycache__
 audio-recognition/.venv
 audio-recognition/manifest.yml
-audio-recognition/constants.py
 audio-recognition/sample.wav
 audio-recognition/runtime.txt
 audio-recognition/Procfile
