@@ -30,6 +30,7 @@
     "build:mta": "mbt build -t gen --mtar mta.tar",
     "mta:deploy": "cf deploy gen/mta.tar",
     "build": "cds build --production",
-    "start": "cds-serve"
+    "start": "cds-serve",
+    "watch-demo": "cds watch --open demo/webapp/index.html?sap-ui-xx-viewCache=false"
   }
 }

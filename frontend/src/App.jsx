@@ -40,13 +40,12 @@ const App = () => {
 
 
   useEffect(() => {
-    
-    fetch('/stations/getGenres()')
-      .then((res) => res.json())
-      .then((data) => setGenres(data.value))
-      .catch((err) => console.error('Error fetching genres:', err));
-    
-  }, []);
+  fetch('/stations/getGenres')
+    .then(res => res.json())
+    .then(setGenres)
+    .catch(err => console.error("Error fetching genres:", err));
+}, []);
+
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');

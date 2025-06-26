@@ -6,8 +6,19 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/user': 'https://f78a52bftrial-dev-backend-cds-srv.cfapps.us10-001.hana.ondemand.com/odata/v4',
-      '/stations' : 'https://f78a52bftrial-dev-backend-cds-srv.cfapps.us10-001.hana.ondemand.com/odata/v4'
-    }
+      // Proxies /stations to localhost:4004/stations (which your CDS backend serves)
+      '/stations': {
+        target: 'http://localhost:4004',
+        changeOrigin: true,
+        secure: false,
+      },
+      // Proxies /my-profile to localhost:4004/my-profile
+      '/my-profile': {
+        target: 'http://localhost:4004',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
-})
+});
+

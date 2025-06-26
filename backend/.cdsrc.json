@@ -7,9 +7,6 @@
         "url": "db.sqlite"
       }
     },
-    "hana": {
-      "fuzzy": 0.7
-    },
     "[production]": {
       "db": {
         "kind": "hana"
@@ -17,9 +14,6 @@
       "auth": {
         "kind": "xsuaa",
         "restrict_all_services": false
-      },
-      "server": {
-        "cors": false
       },
       "hana": {
         "fuzzy": 0.7

@@ -46,8 +46,7 @@ def get_fingerprint(file_path):
 
         if duration is None or fingerprint is None:
             raise ValueError("Could not retrieve duration or fingerprint from `fpcalc` output.")
-
-        print(f"Duration: {duration}s, Fingerprint: {fingerprint[:30]}...")  # Truncate for display
+        
         return duration, fingerprint
 
     except Exception as e:
@@ -116,10 +115,8 @@ async def id_song(stream_url=None):
             digestmod=hashlib.sha1
         ).digest()
     ).decode('ascii')
-
     # Specify the path to your audio file here
     file_path = sample_file 
-
     f = open(file_path, "rb")
     try:
         sample_bytes = os.path.getsize(file_path)
@@ -137,6 +134,5 @@ async def id_song(stream_url=None):
         response = requests.post(requrl, files=files, data=data)
     finally:
         f.close()  
-
     return response.json()
 

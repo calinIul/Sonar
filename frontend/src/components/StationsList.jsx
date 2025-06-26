@@ -124,7 +124,7 @@ const StationsList = ({ loading }) => {
           {filtered.map((station) => (
             <li key={station.stationuuid}>
               {station.name.split(" ").slice(0,7)}
-              <h3><img src={station.favicon ? station.favicon : no_stations}></img></h3>
+              <h3><img src={station.image_url ? station.image_url : no_stations}></img></h3>
               <h3>{station.country}</h3>
               
               {user && (

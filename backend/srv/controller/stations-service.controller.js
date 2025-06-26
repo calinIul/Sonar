@@ -162,7 +162,7 @@ export default class StationsController {
     let name = rawName.split(' - ')[0];
     name = name.replace(/[^a-zA-Z0-9äöüÄÖÜß\s]/g, '');
     name = name.replace(/\s+/g, ' ').trim();
-    const words = name.split(' ').slice(0, 7);
+    const words = name.split(' ').slice(0, 10);
     return words.join(' ');
   }
 }

@@ -23,7 +23,7 @@ entity SongsMetadata {
         duration    : Integer;
         cover       : String;
         fingerprint : String;
-// embedding            : Vector(1536) default null;
+        embedding            : Vector(1536) default null;
 }
 
 entity UserSongs {

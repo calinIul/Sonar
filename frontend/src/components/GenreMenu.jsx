@@ -1,7 +1,6 @@
-import {React, useContext} from 'react';
+import { React, useContext } from 'react';
 import GenrePieChart from './GenrePieChart';
 import RadioContext from '../contexts/RadioContext';
-
 
 const GenreMenu = ({
   genres,
@@ -11,13 +10,8 @@ const GenreMenu = ({
   fetchStations,
   handleSearchChange,
   handleSearchSubmit,
-  
 }) => {
   const { history, setHistory } = useContext(RadioContext);
-
-
-
-
 
   return (
     <div className="side-menu open">
@@ -33,24 +27,28 @@ const GenreMenu = ({
         <button type="submit">Search</button>
       </form>
       <ul className="genre-list">
-        {genres = genres == undefined ? [] : genres
-          .filter((genre) => genre.toLowerCase().includes(searchTerm.toLowerCase()))
+        {(genres?.value ?? [])
+          .filter((genre) =>
+            genre.name.toLowerCase().includes(searchTerm.toLowerCase())
+          )
           .slice(0, 50)
           .map((genre) => (
             <li
-              key={genre}
-              className={`genre-item ${selectedGenre === genre ? 'active' : ''}`}
+              key={genre.name}
+              className={`genre-item ${
+                selectedGenre === genre.name ? 'active' : ''
+              }`}
               onClick={() => {
-                fetchStations(genre);
-                setSelectedGenre(genre);
+                fetchStations(genre.name);
+                setSelectedGenre(genre.name);
               }}
             >
-              {genre}
+              {genre.name}
             </li>
           ))}
       </ul>
     </div>
-  )
+  );
 };
 
 export default GenreMenu;
