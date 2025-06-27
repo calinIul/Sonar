@@ -6,14 +6,19 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // Proxies /stations to localhost:4004/stations (which your CDS backend serves)
+      
       '/stations': {
         target: 'http://localhost:4004',
         changeOrigin: true,
         secure: false,
       },
-      // Proxies /my-profile to localhost:4004/my-profile
-      '/my-profile': {
+      
+      '/user': {
+        target: 'http://localhost:4004',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/ar': {
         target: 'http://localhost:4004',
         changeOrigin: true,
         secure: false,

@@ -174,11 +174,10 @@ const App = () => {
   const identifySong = async (station, user) => {
     setLoadingSong(true)
     try {
-      await fetch(`/user/getSong`, {
+      await fetch(`/ar/getSong`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ streamUrl: station.url_resolved, user_ID: user.ID })
       });

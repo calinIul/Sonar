@@ -19,6 +19,7 @@ const NowPlaying = ({ currentStation, stopStream, volume, handleVolumeChange, id
   }, [refreshSongs]);
 
   const handleIdentifySong = async () => {
+    console.log(user)
     if (currentStation) {
       await identifySong(currentStation, user);
     }
@@ -73,7 +74,7 @@ const NowPlaying = ({ currentStation, stopStream, volume, handleVolumeChange, id
           />
           <p>
             {currentStation && <button onClick={stopStream}>Stop</button>}
-            {currentStation && user && <button onClick={handleIdentifySong}>Find song</button>}
+            {currentStation && <button onClick={handleIdentifySong}>Find song</button>}
 
 
           </p>

@@ -28,25 +28,25 @@ export default class AudioController {
       let song = this._generateSample(streamUrl);
 
       //3. Check for song data
-      if (song.artist && song.title) {
-        //4. Get metadata for the song
-        const song_metadata = await this._getSongMetadata(song);
-        song.id = song_id;
-        song.genres = song_metadata.genres.map((genre) => genre.name);
-        song_metadata.fingerprint = fingerprint;
+      // if (song.artist && song.title) {
+      //   //4. Get metadata for the song
+      //   const song_metadata = await this._getSongMetadata(song);
+      //   song.id = song_id;
+      //   song.genres = song_metadata.genres.map((genre) => genre.name);
+      //   song_metadata.fingerprint = fingerprint;
 
-        //5. Generate && process embeddings
-        try {
-          const embedding = await this.AIClient.getEmbeddings(fingerprint);
-          song_metadata.embedding = embedding;
-        } catch (error) {
-          console.log('Error fetching embeddings:', error);
-        }
-        //6. Process the song
-        await this._processSong(Songs, song, song_metadata, user_ID);
-        //7. End process
-        return null;
-      }
+      //   //5. Generate && process embeddings
+      //   try {
+      //     // const embedding = await this.AIClient.getEmbeddings(fingerprint);
+      //     // song_metadata.embedding = embedding;
+      //   } catch (error) {
+      //     // console.log('Error fetching embeddings:', error);
+      //   }
+      //   //6. Process the song
+      //   await this._processSong(Songs, song, song_metadata, user_ID);
+      //   //7. End process
+      //   return null;
+      // }
       //2.b Fallback - Call the audio recognition service, get the song data
       const result = await this._callAudioRecAPI(streamUrl);
       const body =
@@ -75,14 +75,14 @@ export default class AudioController {
         song_metadata.fingerprint = fingerprint;
 
         //5.b Generate && process embeddings
-        try {
-          const embedding = await this.AIClient.getEmbeddings(fingerprint);
-          song_metadata.embedding = embedding;
-        } catch (error) {
-          console.log('Error fetching embeddings:', error);
-        }
+        // try {
+        //   const embedding = await this.AIClient.getEmbeddings(fingerprint);
+        //   song_metadata.embedding = embedding;
+        // } catch (error) {
+        //   console.log('Error fetching embeddings:', error);
+        // }
 
-        //6. b Process the song
+        // //6. b Process the song
         await this._processSong(Songs, song, song_metadata , user_ID);
       }
 

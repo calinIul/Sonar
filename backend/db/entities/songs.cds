@@ -11,8 +11,8 @@ entity Songs : cuid {
                            on metadata.song = $self;
     user             : Composition of many UserSongs
                            on user.song.ID = ID;
-    genres           : Association to many SongGenres
-                           on genres.song = $self;
+    genres           : Composition of many SongGenres
+                           on genres.song.ID = ID;
 
 }
 

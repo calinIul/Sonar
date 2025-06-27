@@ -10,10 +10,10 @@ using {sonar.Songs} from './songs';
 }
 entity Genres {
     key name    : String;
-        station : Association to many StationGenres
-                      on station.genre = $self;
-        song    : Association to many SongGenres
-                      on song.genre = $self;
+        station : Composition of many StationGenres
+                      on station.genre.name = name;
+        song    : Composition of many SongGenres
+                      on song.genre.name = name;
 }
 
 

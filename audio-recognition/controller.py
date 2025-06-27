@@ -97,7 +97,7 @@ async def capture_sample_from_stream(stream_url, duration_sec):
 
 async def id_song(stream_url=None):
     #Capture a sample from the stream
-    await capture_sample_from_stream(stream_url, output_file=sample_file)
+    await capture_sample_from_stream(stream_url, 5)
 
     timestamp = time.time()
 

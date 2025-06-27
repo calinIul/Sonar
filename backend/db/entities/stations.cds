@@ -12,8 +12,8 @@ entity Stations : cuid {
         country         : String;
         clickcount      : Integer;
         clicktrend      : Integer;
-        genre           : Association to many StationGenres
-                                  on genre.station = $self;
+        genre           : Composition of many StationGenres
+                                  on genre.station.ID = ID;
         users           : Composition of many UserStations
                                   on users.station.ID = ID;
 
