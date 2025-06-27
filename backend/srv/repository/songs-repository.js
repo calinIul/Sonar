@@ -4,7 +4,11 @@ export default class SongsRepository {
   }
 
   async addSong(entity, song) {
-    await this.db.run(INSERT.into(entity).entries({ song }));
+    await this.db.run(INSERT.into(entity).entries(song));
+  }
+
+  async addUserSong(entity, userSong) {
+    await this.db.run(INSERT.into(entity).entries(userSong));
   }
 
   async getSongByTitle(entity, title) {

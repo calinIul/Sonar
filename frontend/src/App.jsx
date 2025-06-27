@@ -40,6 +40,7 @@ const App = () => {
 
 
   useEffect(() => {
+    
   fetch('/stations/getGenres')
     .then(res => res.json())
     .then(setGenres)
@@ -61,7 +62,7 @@ const App = () => {
     try {
       const res = await fetch(`/stations/getStations(genre='${term}')`);
       const data = await res.json();
-      setStations(data.value || []);
+      setStations(data.value || data);
     } catch (err) {
       console.error('Error fetching stations:', err);
       setStations([]);
@@ -155,14 +156,13 @@ const App = () => {
   };
   
   const addFavorites = async (user, station) => {
-    
+    console.log(station)
     await fetch(`/user/saveStation`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.token}`
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({user_ID: user.ID, stationuuid: station.stationuuid, name: station.name, url_resolved: station.url_resolved, country: station.country})
+      body: JSON.stringify({user_ID: user.ID, station: station})
     });
     setRefreshFavorites((prev) => prev + 1);
     
@@ -174,7 +174,7 @@ const App = () => {
   const identifySong = async (station, user) => {
     setLoadingSong(true)
     try {
-      await fetch(`/ar/getSong`, {
+      await fetch(`/ar/findSong`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

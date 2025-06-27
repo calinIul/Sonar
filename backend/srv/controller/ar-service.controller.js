@@ -14,7 +14,7 @@ export default class AudioController {
   }
 
   async onFindSong(streamUrl, user_ID) {
-    if (!streamUrl || !user_ID) return;
+    // if (streamUrl || user_ID) return;
     const Songs = this.cdsEntities[CDS_ENTITIES.Songs];
     const SongsMetadata = this.cdsEntities[CDS_ENTITIES.SongsMetadata];
     const UserSongs = this.cdsEntities[CDS_ENTITIES.UserSongs];
@@ -49,8 +49,11 @@ export default class AudioController {
       // }
       //2.b Fallback - Call the audio recognition service, get the song data
       const result = await this._callAudioRecAPI(streamUrl);
+
       const body =
-        result?.status?.msg === 'Success' ? result.metadata.music[0] : false;
+        result?.status?.msg === 'Success' && result.metadata?.music?.length
+          ? result.metadata.music[0]
+          : null;
 
       //3.b
       if (body) {
@@ -67,7 +70,7 @@ export default class AudioController {
           cover: body.external_metadata?.spotify
             ? body.external_metadata.spotify[0].album.cover
             : null,
-          genres: body.genres.map((genre) => genre.name),
+          genres: body.genres?.map((genre) => genre.name) || null,
           url: body.external_metadata?.spotify
             ? body.external_metadata.spotify[0].link
             : null,
@@ -83,7 +86,8 @@ export default class AudioController {
         // }
 
         // //6. b Process the song
-        await this._processSong(Songs, song, song_metadata , user_ID);
+        console.log(song);
+        await this._processSong(song, song_metadata, user_ID);
       }
 
       return null;
@@ -91,26 +95,34 @@ export default class AudioController {
       console.log('Error finding song:', error);
     }
   }
-  async _processSong(entity, song, metadata=null, user_ID) {
+  async _processSong(song, metadata = null, user_ID) {
     //1. Add song to the database
-    await this.songsRepository.addSong(entity, song, user_ID);
-    //2. Get the song ID
-    const song_ID = await this.songsRepository.getSongByTitle(
-      entity,
-      song.title
-    );
-    //3. Add genres
-    await this.songsRepository.addGenres(entity, song_ID, song.genres);
-    //4. Sync UserSongs
-    const userSong = {
-      user_ID: user_ID,
-      song_ID: song_ID,
-    };
-    await this.songsRepository.syncUserSongs(entity, userSong);
-    //5. Add song metadata
-    if (metadata) {
-      await this.songsRepository.addSongMetadata(entity, song_ID, metadata);
+    const Songs = this.cdsEntities[CDS_ENTITIES.Songs];
+    const UserSongs = this.cdsEntities[CDS_ENTITIES.UserSongs];
+    await this.songsRepository.addSong(Songs, song);
+    let dSong = await this.songsRepository.getSongByTitle(Songs, song.title)
+    let userSong = {
+      song_ID: dSong.ID,
+      user_ID: user_ID
     }
+    await this.songsRepository.addUserSong(UserSongs, userSong)
+    //2. Get the song ID
+    // const song_ID = await this.songsRepository.getSongByTitle(
+    //   entity,
+    //   song.title
+    // );
+    // //3. Add genres
+    // await this.songsRepository.addGenres(entity, song_ID, song.genres);
+    // //4. Sync UserSongs
+    // const userSong = {
+    //   user_ID: user_ID,
+    //   song_ID: song_ID,
+    // };
+    // await this.songsRepository.syncUserSongs(entity, userSong);
+    // //5. Add song metadata
+    // if (metadata) {
+    //   await this.songsRepository.addSongMetadata(entity, song_ID, metadata);
+    // }
   }
 
   async _getSongMetadata(song) {
@@ -148,12 +160,13 @@ export default class AudioController {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ streamUrl: streamUrl }),
+        body: JSON.stringify({ streamUrl }),
       });
+
       const response = await res.json();
-      song = response?.data?.metadata || response?.metadata;
-      return song || null;
+      return response;
     } catch (error) {
+      console.error('Error calling audio recognition API:', error);
       return null;
     }
   }
@@ -161,7 +174,7 @@ export default class AudioController {
   async _generateSample(streamUrl) {
     try {
       await fetch(AUDIO_URL + '/sample', {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },

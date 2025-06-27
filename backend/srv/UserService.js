@@ -18,13 +18,10 @@ export default async function UsersService() {
   });
 
   this.on("saveStation", async (req) => {
-    const { user_ID, stationuuid, name, url_resolved, country } = req.data;
+    const { user_ID, station } = req.data;
     await userController.onSaveStation(
       user_ID,
-      stationuuid,
-      name,
-      url_resolved,
-      country
+      station
     );
   });
 
@@ -32,4 +29,14 @@ export default async function UsersService() {
     const { streamUrl, user_ID } = req.data;
     await userController.onGetSong(streamUrl, user_ID);
   });
+
+  this.on("signUp", async(req) => {
+    const { email, password } = req.data;
+    return userController.onSignUp(email, password);
+  })
+
+  this.on("logIn", async(req) => {
+    const { email, password } = req.data;
+    return userController.onLogIn(email, password);
+  })
 };

@@ -37,6 +37,7 @@ export default class StationsController {
       genres.sort((a, b) => a.name.localeCompare(b.name));
       await this.genresRepository.addGenres(Genres, genres);
       genres = genres.slice(offset, offset + limit);
+
       return genres;
     } catch (error) {
       console.log(`Error fetching genres: ${error}`);
@@ -48,25 +49,28 @@ export default class StationsController {
       let stations = await this.stationsRepository.getStationsByGenre(
         StationGenres,
         searchTerm
-      ).then();
-      stations = stations.map((entry) => {
-        const station = entry.station || entry;
-      
-        return {
-          ID: station.stationuuid,
-          name: station.name,
-          url: station.url,
-          url_resolved: station.url_resolved,
-          image_url: station.image_url,
-          country: station.country,
-          clickcount: station.clickcount,
-          clicktrend: station.clicktrend,
-        };
-      });
+      );
+
       if (stations && stations.length !== 0) {
-        return stations;
+        stations = stations.map((entry) => {
+          const station = entry.station || entry;
+
+          return {
+            ID: station.stationuuid || station.ID,
+            name: station.name,
+            url: station.url,
+            url_resolved: station.url_resolved,
+            image_url: station.image_url,
+            country: station.country,
+            clickcount: station.clickcount,
+            clicktrend: station.clicktrend,
+          };
+        });
+        
+      } else {
+        // Only call fallback if stations is empty or null
+        stations = await this._fetchStationsFromAPI(searchTerm);
       }
-      stations = await this._fetchStationsFromAPI(searchTerm);
 
       return stations;
     } catch (error) {
@@ -93,16 +97,14 @@ export default class StationsController {
         )
         .map((station) => {
           return {
-            
-              ID: station.stationuuid,
-              name: this._normalizeStationName(station.name),
-              url: station.url,
-              url_resolved: station.url_resolved,
-              image_url: station.image_url,
-              country: station.country,
-              clickcount: station.clickcount,
-              clicktrend: station.clicktrend,
-            
+            ID: station.stationuuid,
+            name: this._normalizeStationName(station.name),
+            url: station.url,
+            url_resolved: station.url_resolved,
+            image_url: station.favicon,
+            country: station.country,
+            clickcount: station.clickcount,
+            clicktrend: station.clicktrend,
           };
         });
     }
@@ -112,6 +114,7 @@ export default class StationsController {
       const response = await axios.get(
         `${BASE_API_URL}/stations/bytag/${searchTerm}`
       );
+      
       stations = response.data
         .filter(
           (station) =>
@@ -120,16 +123,14 @@ export default class StationsController {
         )
         .map((station) => {
           return {
-            
-              ID: station.stationuuid,
-              name: this._normalizeStationName(station.name),
-              url: station.url,
-              url_resolved: station.url_resolved,
-              image_url: station.image_url,
-              country: station.country,
-              clickcount: station.clickcount,
-              clicktrend: station.clicktrend,
-            
+            ID: station.stationuuid,
+            name: this._normalizeStationName(station.name),
+            url: station.url,
+            url_resolved: station.url_resolved,
+            image_url: station.favicon,
+            country: station.country,
+            clickcount: station.clickcount,
+            clicktrend: station.clicktrend,
           };
         });
     }
@@ -137,6 +138,7 @@ export default class StationsController {
       const station_ids = stations.map((station) => station.ID);
       await this._processStations(searchTerm, stations, station_ids);
     }
+    
     return stations;
   }
 

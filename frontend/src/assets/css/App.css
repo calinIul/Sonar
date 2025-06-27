@@ -163,6 +163,7 @@
   background-color: hsl(0, 0%, 100%);
   border: 1px solid #ccc;
   cursor: pointer;
+  color:#333;
 }
 
 .genre-item:hover {
@@ -211,6 +212,7 @@
   list-style: none;
   padding: 10px;
   margin: 0;
+  color:#333;
   /* Remove default margin */
 }
 

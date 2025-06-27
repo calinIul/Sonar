@@ -1,7 +1,7 @@
 // StationsList.jsx ------------ atm black metal on load error
 import React, { useContext, useEffect, useState } from 'react';
 import RadioContext from '../contexts/RadioContext';
-import no_stations from '../assets/images/generated_image.png'
+import no_stations from '../assets/images/no_stations.png'
 import UserContext from '../contexts/UserContext';
 import GenrePieChart from '../components/GenrePieChart'; 
 
@@ -22,7 +22,7 @@ const StationsList = ({ loading }) => {
   const handleSearchChange = (event) => {
     const searchTerm = event.target.value;
     setFilterTerm(searchTerm);
-  
+    
     
     const dynamicFiltered = stations.filter((station) => {
       const tags = station.tags.split(",").map(tag => tag.trim().toLowerCase());
@@ -71,7 +71,7 @@ const StationsList = ({ loading }) => {
     const sorted = [...filtered].sort((a, b) => 
       b.clicktrend - a.clicktrend
     );
-
+    console.log(stations)
     setFiltered(sorted);
     
   }
@@ -123,7 +123,7 @@ const StationsList = ({ loading }) => {
         <ul>
           {filtered.map((station) => (
             <li key={station.stationuuid}>
-              {station.name.split(" ").slice(0,7)}
+              <h3>{station.name}</h3>
               <h3><img src={station.image_url ? station.image_url : no_stations}></img></h3>
               <h3>{station.country}</h3>
               
