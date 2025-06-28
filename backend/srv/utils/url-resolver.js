@@ -30,6 +30,7 @@ export async function get_available_server(retries) {
           .catch(() => null)
     )
   ).then(async (result) => {
+    console.log(result)
     while (!result && retries) {
       console.log(`No available server...Retry: ${retries}`);
       await get_available_server(retries--);

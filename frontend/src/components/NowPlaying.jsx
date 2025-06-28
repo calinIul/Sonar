@@ -24,7 +24,6 @@ const NowPlaying = ({
   }, [refreshSongs]);
 
   const handleIdentifySong = async () => {
-    console.log(currentStation, user);
     if (currentStation) {
       await identifySong(currentStation, user);
     }
@@ -65,11 +64,6 @@ const NowPlaying = ({
           </div>
         )}
 
-        {notFound && (
-          <div className="now-playing-sr">
-            <h3>Couldn't identify song</h3>
-          </div>
-        )}
 
         <div className="now-playing-sr">
           <label>

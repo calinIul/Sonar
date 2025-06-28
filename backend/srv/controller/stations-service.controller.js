@@ -5,7 +5,7 @@ import axios from 'axios';
 import { get_available_server } from '../utils/url-resolver.js';
 
 const { CDS_ENTITIES } = constants;
-const BASE_API_URL = (await get_available_server(5)) + '/json';
+const BASE_API_URL = (await get_available_server(10)) + '/json';
 
 export default class StationsController {
   constructor(db, cdsEntities) {
@@ -131,6 +131,7 @@ export default class StationsController {
             country: station.country,
             clickcount: station.clickcount,
             clicktrend: station.clicktrend,
+            genres: station.tags,
           };
         });
     }
